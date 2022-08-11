@@ -1,12 +1,11 @@
 import java.util.Date;
 
-public abstract class FineTransaction {
 
-	private Date creationDate;
-	private double amount;
+public class Library {
+	private String name;
+	private Address address;
 	
-	public boolean initiateTransaction() {
-		return true;
+	public Address getAddress() {
+		return address;
 	}
-	
 }

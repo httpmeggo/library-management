@@ -24,6 +24,16 @@ class BookItem extends Book { //removed public
   private Rack placedAt;
   private BookItem reservationArray[];
 
+  //GETTERS AND SETTERS
+  public String getBarCode(){
+	return barcode;
+	  
+  }
+  public void updateBookItemStatus(BookStatus stat) {
+	  this.status = stat;
+  }
+
+
   public boolean checkout(String memberId) {
     if(bookItem.getIsReferenceOnly()) {
       ShowError("This book is Reference only and can't be issued");
