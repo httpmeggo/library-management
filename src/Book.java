@@ -22,6 +22,7 @@ class BookItem extends Book { //removed public
   private Date dateOfPurchase;
   private Date publicationDate;
   private Rack placedAt;
+  private BookItem reservationArray[];
 
   public boolean checkout(String memberId) {
     if(bookItem.getIsReferenceOnly()) {
@@ -34,9 +35,4 @@ class BookItem extends Book { //removed public
     this.updateBookItemStatus(BookStatus.LOANED);
     return true;
   }
-}
-
-class Rack { //removed public
-  private int number;
-  private String locationIdentifier;
 }
