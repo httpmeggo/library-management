@@ -7,12 +7,14 @@ public class Library implements Serializable {
 	private List<Book> collection;
 	
 	public Library() {
-		List<Book> collection = new ArrayList<Book>();
+		collection = new ArrayList<Book>();
 	}
 	
 	public void addBook(Book book) {
 		collection.add(book);
 	}
+	
+	
 	
 	@Override
 	public String toString() {
