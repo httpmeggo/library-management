@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 // For simplicity, we are not defining getter and setter functions. The reader can
@@ -8,41 +10,99 @@ public abstract class Account {
   private String id;
   private String password;
   private AccountStatus status;
-  private Person person;
 
   public boolean resetPassword() {
-	return false;
-}
+    return false;
+  }
 }
 
-class Librarian extends Account { //removed public
+class Librarian extends Account { // removed public
+  String id;
+  String password;
+  AccountStatus status;
+
+  public Librarian(String id, String pw, AccountStatus status){
+    this.id = id;
+    this.password = pw;
+    this.status = status;
+  }
+  
   public boolean addBookItem(BookItem bookItem) {
-	return false;
-}
+    return false;
+  }
 
   public boolean blockMember(Member member) {
-	return false;
-}
+    return false;
+  }
 
   public boolean unBlockMember(Member member) {
-	return false;
-}
+    return false;
+  }
 }
 
-class Member extends Account { //removed public
+class Member extends Account { // removed public
   private Date dateOfMembership;
   private int totalBooksCheckedout;
+  String name;
+  String email;
+  String phone;
+  private String id;
+  String password;
+  AccountStatus status;
+  private static ArrayList<Member> members = new ArrayList<Member>();
+  private static long idCounter = 0;
 
-  public int getTotalBooksCheckedout() {
-	return 0;
-}
+  // trackable human-readable ID
+  public static synchronized String createID() {
+    return String.valueOf(idCounter++);
+  }
 
-  public boolean reserveBookItem(BookItem bookItem) {
-	return false;
-}
+  // Member constructors
+  public Member(Date dom, String name, String email, String phone, String id, String password) {
+    this.dateOfMembership = dom;
+    this.totalBooksCheckedout = 0;
+    this.name = name;
+    this.email = email;
+    this.phone = phone;
+    this.id = id;
+    this.password = password;
+    this.status = AccountStatus.ACTIVE;
+  }
+
+  public Member(){
+    this.dateOfMembership = null;
+    this.totalBooksCheckedout = 0;
+    this.name = null;
+    this.email = null;
+    this.phone = null;
+    this.id = null;
+    this.password = null;
+    this.status = null;
+  }
+
+  // adds new member to members ArrayList
+  public static void registerMember(String name, String email, String phone, String password) {
+    Date registerDate = new Date();
+    String newid = createID();
+
+    Member newMember = new Member(registerDate, name, email, phone, newid, password);
+    members.add(newMember);
+  }
+
+  public int getTotalBooksCheckedout(Member a) {
+    return a.totalBooksCheckedout;
+  }
+  public static ArrayList getMemberList(){
+    return members;
+  }
+  public static String getEmail(Member a){
+    return a.email;
+  }
+
+
 
   private void incrementTotalBooksCheckedout() {
-}
+  }
 
   public boolean checkoutBookItem(BookItem bookItem) {
     if (this.getTotalBooksCheckedOut() >= Constants.MAX_BOOKS_ISSUED_TO_A_USER) {
