@@ -1,7 +1,8 @@
+package status;
 
 public enum BookStatus {
-	AVAILABLE,
+    AVAILABLE,
     RESERVED,
     LOANED,
     LOST
-  }
+}

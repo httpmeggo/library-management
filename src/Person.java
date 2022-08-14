@@ -10,6 +10,4 @@ public class Person implements Serializable {
     	this.email = newEmail;
     	this.phone = newPhone;
     }
-    
-    
-  }
+}

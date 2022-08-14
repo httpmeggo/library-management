@@ -1,8 +1,9 @@
+package status;
 
-public enum AccountStatus{
+public enum AccountStatus {
     ACTIVE,
     CLOSED,
     CANCELED,
     BLACKLISTED,
     NONE
-  }
+}

@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
+
+import status.BookStatus;
+
 import java.util.ArrayList;
 
 public class Main {
@@ -86,17 +89,16 @@ public class Main {
 		System.out.println("\nPlease enter your email: ");
 		String email = input.next();
 		ArrayList<Member> members = Member.getMemberList();
-		for (int i = 0; i<members.size(); i++){
+		for (int i = 0; i < members.size(); i++){
 			if (members.get(i).email == email){
 				Member a = members.get(i);
-				  System.out.println("\nPlease enter your password");
-				  String pw = input.next();
-				  if(a.password == pw){
-					System.out.println("\nLogin was successful");
-					//TODO: what to print/what to give access to
-				  }
-
-			}else{
+				System.out.println("\nPlease enter your password");
+				String pw = input.next();
+				if (a.checkPassword(pw)) {
+				System.out.println("\nLogin was successful");
+				// TODO: what to print/what to give access to
+				}
+			} else {
 				System.out.println("\nYour email is not registered. Please create an account");
 				createAnAccount();
 			}
@@ -104,13 +106,8 @@ public class Main {
 	}
 
 	private static void addBook() {
-		String ISBN;
-		String title;
-		String subject;
-		String publisher;
-		String language;
-		int numberOfPages;
-		String author;
+		String isbn, title, author, subject, publisher, language;
+		int numPages;
 		double price;
 		BookStatus status;
 
@@ -121,7 +118,7 @@ public class Main {
 		author = input.nextLine();
 
 		System.out.println("\nEnter ISBN: ");
-		ISBN = input.nextLine();
+		isbn = input.nextLine();
 
 		System.out.println("\nEnter price: ");
 		price = input.nextDouble();
@@ -136,12 +133,11 @@ public class Main {
 		language = input.nextLine();
 
 		System.out.println("\nEnter number of pages: ");
-		numberOfPages = input.nextInt();
+		numPages = input.nextInt();
 
 		status = BookStatus.AVAILABLE;
 
-		Book b = new Book(ISBN, title, author, subject, publisher,
-				language, numberOfPages, price, status);
+		Book b = new Book(isbn, title, author, subject, publisher, language, numPages, price, status);
 		lib.addBook(b);
 	}
 

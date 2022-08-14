@@ -2,65 +2,67 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import status.BookStatus;
+
 public abstract class Book implements Serializable {
-	private String ISBN;
+	private String isbn;
 	private String title;
 	private String author;
 	private String subject;
 	private String publisher;
 	private String language;
-	private int numberOfPages;
+	private int numPages;
 	private double price;
 	private BookStatus status;
 
 	public Book() {
-		ISBN = "0";
+		isbn = "0";
 		title = null;
 		author = null;
 		subject = null;
 		publisher = null;
 		language = null;
-		numberOfPages = 0;
+		numPages = 0;
 		price = 0;
 		status = BookStatus.AVAILABLE;
 	}
 
-	public Book(String newISBN, String newTitle, 
-			String newAuthor, String newSubject, 
-			String newPublisher, String newLanguage,
-			int newNumOfPages, double newPrice, BookStatus newStatus) {
-		this.ISBN = newISBN;
-		this.title = newTitle;
-		this.author = newAuthor;
-		this.subject = newSubject;
-		this.publisher = newPublisher;
-		this.language = newLanguage;
-		this.numberOfPages = newNumOfPages;
-		this.price = newPrice;
-		this.status = newStatus;
+	public Book(String isbn, String titl, String auth, String subj, String publ, String lang, int numP, double price, BookStatus stat) {
+		this.isbn = isbn;
+		this.title = titl;
+		this.author = auth;
+		this.subject = subj;
+		this.publisher = publ;
+		this.language = lang;
+		this.numPages = numP;
+		this.price = price;
+		this.status = stat;
 	}
 
 	@Override
 	public String toString() {
-		return "\nTitle: " + title + "\nAuthor: " + author + "\nISBN: " 
-				+ ISBN + "\nSubject: " + subject + "\nPublisher: " + 
-				publisher + "\nLanguage: " + language + 
-				"\nNumber of Pages: " + numberOfPages + "\nPrice: " + price 
-				+ "\nStatus: " + status + "\n";
+		return "\nTitle: " + title
+			+ "\nAuthor: " + author
+			+ "\nISBN: " + isbn
+			+ "\nSubject: " + subject
+			+ "\nPublisher: " + publisher
+			+ "\nLanguage: " + language
+			+ "\nNumber of Pages: " + numPages
+			+ "\nPrice: " + price 
+			+ "\nStatus: " + status + "\n";
 	}
 
-	//GETTERS AND SETTERS
+	// GETTERS AND SETTERS
 
 	public void updateBookItemStatus(BookStatus stat) {
 		this.status = stat;
 	}
 
 
-	//METHODS
+	// METHODS
 	public boolean checkout(String isbn) {
-		if(isbn.compareTo(this.ISBN) == 0) {
-			System.out.println("You have successfully checked out " + this.title
-					+ "\nPlease return the book in two weeks.");
+		if (isbn.compareTo(this.isbn) == 0) {
+			System.out.println("You have successfully checked out " + this.title + ".\nPlease return the book in two weeks.");
 			this.updateBookItemStatus(BookStatus.LOANED);
 			return true;
 		}
