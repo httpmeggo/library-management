@@ -1,4 +1,4 @@
-package accounts;
+package account;
 
 import status.AccountStatus;
 
@@ -7,15 +7,29 @@ import status.AccountStatus;
 // public getter methods and modified only through their public methods function.
 
 public abstract class Account {
+    private boolean admin = false;
     private String id;
     private String password;
     private AccountStatus status;
 
-    public boolean resetPassword() {
-        return false;
+    protected void initAccountInfo(String id, String pass, AccountStatus status, boolean admin) {
+        this.id = id;
+        this.password = pass;
+        this.status = status;
+        this.admin = admin;
+    }
+
+    public boolean isAdmin() {
+        return this.admin;
+    }
+
+    public AccountStatus getStatus() {
+        return this.status;
     }
 
     public boolean checkPassword(String p) {
+        System.out.println(this.password);
+        System.out.println(p);
         return this.password.equals(p);
     }
 }

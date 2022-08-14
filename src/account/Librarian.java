@@ -1,16 +1,10 @@
-package accounts;
+package account;
 
 import status.AccountStatus;
 
-public class Librarian {
-    String id;
-    String password;
-    AccountStatus status;
-
+public class Librarian extends Account {
     public Librarian(String id, String pw, AccountStatus status) {
-        this.id = id;
-        this.password = pw;
-        this.status = status;
+        super.initAccountInfo(id, pw, status, true);
     }
     
     public boolean addBook(Book book) {

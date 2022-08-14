@@ -1,4 +1,4 @@
-package accounts;
+package account;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -6,72 +6,81 @@ import java.util.Date;
 
 import status.*;
 
-class Member extends Account { // removed public
-    private Date joinDate;
-    private int totalBooksCheckedout;
-    String name;
-    String email;
-    String phone;
-    private String id;
-    String password;
-    AccountStatus status;
+public class Member extends Account { // removed public
     private static ArrayList<Member> members = new ArrayList<Member>();
     private static long idCounter = 0;
 
+    public String name;
+    public String email;
+    public String phone;
+
+    private Date joinDate;
+    private int totalBooksCheckedOut;
+
     // trackable human-readable ID
     public static synchronized String createID() {
-        return String.valueOf(idCounter++);
+        return String.valueOf(++idCounter);
+    }
+
+    public static ArrayList<Member> getMemberList(){
+        return members;
+    }
+
+    public static Member getByEmail(String email) {
+        for (int i = 0; i < members.size(); i++) {
+            Member m = members.get(i);
+            if (m.getEmail().equalsIgnoreCase(email)) {
+                return m;
+            }
+        }
+        return null;
     }
 
     // Member constructors
     public Member(Date jd, String name, String email, String phone, String id, String password) {
         this.joinDate = jd;
-        this.totalBooksCheckedout = 0;
+        this.totalBooksCheckedOut = 0;
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.id = id;
-        this.password = password;
-        this.status = AccountStatus.ACTIVE;
+        super.initAccountInfo(id, password, AccountStatus.ACTIVE, false);
     }
 
-    public Member() {
-        this.joinDate = null;
-        this.totalBooksCheckedout = 0;
-        this.name = null;
-        this.email = null;
-        this.phone = null;
-        this.id = null;
-        this.password = null;
-        this.status = null;
-    }
+    // not used? will only cause problems
+    // public Member() {
+    //     this.joinDate = null;
+    //     this.totalBooksCheckedOut = 0;
+    //     this.name = null;
+    //     this.email = null;
+    //     this.phone = null;
+    //     this.id = null;
+    //     super.setPassword(null);
+    //     this.status = null;
+    // }
 
     // adds new member to members ArrayList
     public static void registerMember(String name, String email, String phone, String password) {
         Date registerDate = new Date();
-        String newid = createID();
+        String newID = createID();
 
-        Member newMember = new Member(registerDate, name, email, phone, newid, password);
+        Member newMember = new Member(registerDate, name, email, phone, newID, password);
         members.add(newMember);
     }
 
-    public int getTotalBooksCheckedout(Member a) {
-        return a.totalBooksCheckedout;
+    public int getTotalBooksCheckedOut() {
+        return this.totalBooksCheckedOut;
     }
-    public static ArrayList getMemberList(){
-        return members;
-    }
-    public static String getEmail(Member a){
-        return a.email;
+    public String getEmail(){
+        return this.email;
     }
 
 
-
-    private void incrementTotalBooksCheckedout() {
+    private void incrementTotalBooksCheckedOut() {
+        totalBooksCheckedOut++;
     }
 
     public boolean checkoutBook(Book book) {
-        if (this.getTotalBooksCheckedOut() >= Constants.MAX_BOOKS_ISSUED_TO_A_USER) {
+        if (this.totalBooksCheckedOut >= Constants.MAX_BOOKS_ISSUED_TO_A_USER) {
             ShowError("The user has already checked-out maximum number of books");
             return false;
         }
@@ -90,7 +99,7 @@ class Member extends Account { // removed public
             return false;
         }
 
-        this.incrementTotalBooksCheckedout();
+        this.incrementTotalBooksCheckedOut();
         return true;
     }
 
@@ -111,7 +120,7 @@ class Member extends Account { // removed public
         // check if this book item has a pending reservation from another member
         if (bookReservation != null && bookReservation.getMemberId() != this.getMemberId()) {
             ShowError("This book is reserved by another member");
-            member.decrementTotalBooksCheckedout();
+            member.decrementTotalBooksCheckedOut();
             book.updateBookState(BookStatus.RESERVED);
             bookReservation.sendBookAvailableNotification();
             return false;

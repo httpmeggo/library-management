@@ -1,10 +1,10 @@
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+// import java.util.Date;
+// import java.util.List;
 
 import status.BookStatus;
 
-public abstract class Book implements Serializable {
+public class Book implements Serializable {
     private String isbn;
     private String title;
     private String author;
@@ -54,7 +54,7 @@ public abstract class Book implements Serializable {
 
     // GETTERS AND SETTERS
 
-    public void updateBookItemStatus(BookStatus stat) {
+    public void updateBookStatus(BookStatus stat) {
         this.status = stat;
     }
 
@@ -63,7 +63,7 @@ public abstract class Book implements Serializable {
     public boolean checkout(String isbn) {
         if (isbn.compareTo(this.isbn) == 0) {
             System.out.println("You have successfully checked out " + this.title + ".\nPlease return the book in two weeks.");
-            this.updateBookItemStatus(BookStatus.LOANED);
+            this.updateBookStatus(BookStatus.LOANED);
             return true;
         }
         System.out.println("Cannot complete checkout. Please try again.");

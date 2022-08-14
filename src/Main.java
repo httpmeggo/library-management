@@ -5,11 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import account.*;
 import status.BookStatus;
-
-import java.util.ArrayList;
 
 public class Main {
 
@@ -19,25 +19,79 @@ public class Main {
     static Boolean running = true;
 
     public static void main(String[] args) {
-        System.out.println("If you have an existing library account, type 'login'."
-                + "\nIf you are a Librian, type 'librarian'."
-                + "\nOtherwise, if you'd like to create an account, type 'create'.");
-        String option = input.next();
-        if (option.compareTo("login") == 0) {
-            login();
-        } else if (option.compareTo("librarian") == 0) {
-            librarianAccountLogin();
-        } else if (option.compareTo("create") == 0) {
+        System.out.println("\n\n-- Bobst Catalog 2.0 Alpha --\n");
+
+        System.out.print("If you have an existing library account, type 'login'."
+            + "\nIf you are a Librian, type 'librarian'."
+            + "\nOtherwise, if you'd like to create an account, type 'create'."
+            + "\n\nMode: ");
+        String option = input.nextLine();
+        if (option.equalsIgnoreCase("login")) {
+            loginMember();
+        } else if (option.equalsIgnoreCase("librarian")) {
+            loginLibrarian();
+        } else if (option.equalsIgnoreCase("create")) {
             createAnAccount();
         } else {
             System.err.println("Your input is invalid. Please try again.");
         }
 
-        // functionality for Librarian. we don't want the library member to
-        // be able to edit the library or add books to it.
-        // we need to put all of this in a function that only gets called
-        // if the person logs in as a librarian, and then we need to make
-        // a separate menu for if the person logs in as a regular member
+        System.exit(0);
+    }
+
+    private static void createAnAccount() {
+        System.out.print("Enter your name: ");
+        String name = input.nextLine();
+        System.out.print("Enter your email: ");
+        String email = input.nextLine();
+        System.out.print("Enter your phone number: ");
+        String phonenumber = input.nextLine();
+        System.out.print("Enter your password: ");
+        String password = input.nextLine();
+        Member.registerMember(name, email, phonenumber, password);
+        System.out.println("Thank you for registering! You can now log in with your credentials.");
+    }
+
+    //not 100% sure if this works
+    private static void loginMember() {
+        while (true) {
+            System.out.print("\nEmail: ");
+            String email = input.nextLine();
+            Member a = Member.getByEmail(email);
+            if (a == null) {
+                System.out.println("\nYour email is not registered. Please create an account.\n");
+                createAnAccount();
+                continue;
+            }
+
+            System.out.print("Password: ");
+            String pw = input.nextLine();
+            if (a.checkPassword(pw)) {
+                System.out.println("\nWelcome, " + a.name + "!");
+                showMemberMainMenu();
+                return;
+            } else {
+                System.out.println("\nError: That password was incorrect.");
+            }
+        }
+    }
+
+    // TODO: what to print/what to give access to
+    private static void showMemberMainMenu()
+    {
+        System.out.println("Nothing to do here yet. Quitting.");
+    }
+
+    // TODO: Add validation here.
+    private static void loginLibrarian() {
+        showLibrarianMainMenu();
+    }
+
+
+    // functionality for Librarian. we don't want the library member to
+    // be able to edit the library or add books to it.
+    private static void showLibrarianMainMenu()
+    {
         while (running) {
             System.out.println("\nEnter 0 to load a library." +
                     "\nEnter 1 to save and quit." +
@@ -46,8 +100,8 @@ public class Main {
             int answer = input.nextInt();
             switch (answer) {
                 case 0:
-                    System.out.println("Enter file name to load");
-                    loadScript(input.next());
+                    System.out.print("Enter file name to load: ");
+                    loadScript(input.nextLine());
                     break;
                 case 1:
                     saveAndQuit();
@@ -60,46 +114,6 @@ public class Main {
                     break;
             }
         }
-        System.exit(0);
-    }
-
-    private static void createAnAccount() {
-        System.out.println("\nEnter your full name:  ");
-        String name = input.next();
-        System.out.println("\nEnter your email:  ");
-        String email = input.next();
-        System.out.println("\nEnter your phone number:  ");
-        String phonenumber = input.next();
-        System.out.println("\nEnter your password:  ");
-        String password = input.next();
-        Member.registerMember(name, email, phonenumber, password);
-    }
-
-    private static void librarianAccountLogin() {
-        // TODO Auto-generated method stub
-
-
-    }
-
-    //not 100% sure if this works
-    private static void login() {
-        System.out.println("\nPlease enter your email: ");
-        String email = input.next();
-        ArrayList<Member> members = Member.getMemberList();
-        for (int i = 0; i < members.size(); i++){
-            if (members.get(i).email == email){
-                Member a = members.get(i);
-                System.out.println("\nPlease enter your password");
-                String pw = input.next();
-                if (a.checkPassword(pw)) {
-                    System.out.println("\nLogin was successful");
-                    // TODO: what to print/what to give access to
-                }
-            } else {
-                System.out.println("\nYour email is not registered. Please create an account");
-                createAnAccount();
-            }
-         }
     }
 
     private static void addBook() {
