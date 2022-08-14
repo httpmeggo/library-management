@@ -6,8 +6,8 @@ public class Person implements Serializable {
     private String phone;
 
     public Person(String newName, String newEmail, String newPhone){
-    	this.name = newName;
-    	this.email = newEmail;
-    	this.phone = newPhone;
+        this.name = newName;
+        this.email = newEmail;
+        this.phone = newPhone;
     }
 }
