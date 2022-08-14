@@ -3,3 +3,5 @@
 *.class
 *.code-workspace
 *.ser
+.classpath
+.project
